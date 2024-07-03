@@ -1,4 +1,4 @@
-module github.com/dys2p/eco
+module github.com/voles/eco
 
 go 1.22
 
