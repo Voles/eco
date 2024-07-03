@@ -200,12 +200,34 @@ func (config Config) processNode(templateMessages *[]pipeline.Message, node pars
 					if arg.Type() == parse.NodeString {
 						if stringNode, ok := arg.(*parse.StringNode); ok {
 							text := stringNode.Text
+							placeholders := []pipeline.Placeholder{}
+
+							if strings.Contains(stringNode.String(), "%d") {
+								for i, tmplArg := range cmd.Args[2:] {
+									id := tmplArg.String()
+									formattedID := strings.ReplaceAll(id, " ", "")
+									formattedID = strings.ReplaceAll(formattedID, ".", "")
+
+									placeholders = append(placeholders, pipeline.Placeholder{
+										ID:             formattedID,
+										String:         fmt.Sprintf("%%[%d]d", i+1),
+										Type:           "int",
+										UnderlyingType: "int",
+										ArgNum:         i + 1,
+										Expr:           id,
+									})
+
+									text = strings.Replace(text, "%d", fmt.Sprintf("{%s}", formattedID), 1)
+								}
+							}
+
 							message := pipeline.Message{
 								ID:  pipeline.IDList{text},
 								Key: text,
 								Message: pipeline.Text{
 									Msg: text,
 								},
+								Placeholders: placeholders,
 							}
 							*templateMessages = append(*templateMessages, message)
 						}
