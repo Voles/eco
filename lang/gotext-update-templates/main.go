@@ -227,6 +227,8 @@ func containsIdentifier(cmd *parse.CommandNode, identifier string) bool {
 		identifiers = arg.(*parse.FieldNode).Ident
 	case parse.NodeVariable:
 		identifiers = arg.(*parse.VariableNode).Ident
+	case parse.NodeIdentifier:
+		identifiers = []string{arg.(*parse.IdentifierNode).Ident}
 	}
 	return slices.Contains(identifiers, identifier)
 }
