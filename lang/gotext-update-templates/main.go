@@ -203,13 +203,11 @@ func (config Config) processNode(templateMessages *[]pipeline.Message, node pars
 							placeholders := []pipeline.Placeholder{}
 
 							if strings.Contains(stringNode.String(), "%d") {
-								for i, tmplArg := range cmd.Args[2:] {
-									id := tmplArg.String()
-									formattedID := strings.ReplaceAll(id, " ", "")
-									formattedID = strings.ReplaceAll(formattedID, ".", "")
+								for i, _ := range cmd.Args[2:] {
+									id := fmt.Sprintf("arg%d", i+1)
 
 									placeholders = append(placeholders, pipeline.Placeholder{
-										ID:             formattedID,
+										ID:             id,
 										String:         fmt.Sprintf("%%[%d]d", i+1),
 										Type:           "int",
 										UnderlyingType: "int",
@@ -217,7 +215,7 @@ func (config Config) processNode(templateMessages *[]pipeline.Message, node pars
 										Expr:           id,
 									})
 
-									text = strings.Replace(text, "%d", fmt.Sprintf("{%s}", formattedID), 1)
+									text = strings.Replace(text, "%d", fmt.Sprintf("{%s}", id), 1)
 								}
 							}
 
