@@ -221,7 +221,7 @@ func (config Config) processNode(templateMessages *[]pipeline.Message, node pars
 
 							message := pipeline.Message{
 								ID:  pipeline.IDList{text},
-								Key: text,
+								Key: stringNode.Text,
 								Message: pipeline.Text{
 									Msg: text,
 								},
