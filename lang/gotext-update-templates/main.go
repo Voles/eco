@@ -223,7 +223,7 @@ func (config Config) processNode(templateMessages *[]pipeline.Message, node pars
 								ID:  pipeline.IDList{text},
 								Key: text,
 								Message: pipeline.Text{
-									Msg: stringNode.Text,
+									Msg: text,
 								},
 								Placeholders: placeholders,
 							}
